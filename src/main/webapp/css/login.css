@@ -2,7 +2,7 @@
 
 body {
     font-family: 'Poppins', sans-serif;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: #f5f5f5;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -14,7 +14,7 @@ body {
     width: 350px;
     padding: 40px;
     background-color: #ffffff;
-    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
     border-radius: 15px;
     text-align: center;
 }
@@ -55,17 +55,17 @@ input:focus {
 button {
     width: 100%;
     padding: 12px;
-    background-color: #667eea;
+    background-color: #333;
     border: none;
     color: white;
     font-size: 16px;
     border-radius: 8px;
     cursor: pointer;
-    transition: background-color 0.3s;
+    transition: background-color 0.3s, transform 0.2s;
 }
 
 button:hover {
-    background-color: #505457;
+    background-color: #555;
 }
 
 .toggle {
