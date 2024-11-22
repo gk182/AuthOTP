@@ -12,8 +12,8 @@ public class EmailSender {
         // Cấu hình SMTP
         String host = "smtp.gmail.com";
         String port = "587";
-        String senderEmail = "example@gmail.com"; // Email gửi đi
-        String senderPassword = "**** **** ****"; // Mật khẩu ứng dụng của Google
+        String senderEmail = "phamgiakhai278@gmail.com"; // Email gửi đi
+        String senderPassword = "ndrx hmgh kdyd fuvt"; // Mật khẩu ứng dụng của Google
 
         // Thiết lập thuộc tính cho SMTP
         Properties props = new Properties();
@@ -40,12 +40,13 @@ public class EmailSender {
             // Nội dung email (HTML)
             String htmlContent = "<!DOCTYPE html>"
             	    + "<html><head><style>"
-            	    + "body { font-family: Arial, sans-serif; background-color: #f4f4f4; padding: 0; margin: 0; }"
-            	    + ".email-container { background: #ffffff; border-radius: 8px; margin: 20px auto; padding: 20px; width: 600px; }"
-            	    + ".header { background-color: #007bff; color: white; padding: 10px; text-align: center; font-size: 24px; }"
+            	    + "body { font-family: Arial, sans-serif; background-color: #f0f0f0; padding: 0; margin: 0; }"
+            	    + ".email-container { background: #ffffff; border-radius: 8px; margin: 20px auto; padding: 20px; width: 90%; max-width: 600px; box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); }"
+            	    + ".header { background-color: #7d7d7d; color: white; padding: 15px; text-align: center; font-size: 24px; border-radius: 8px 8px 0 0; }"
             	    + ".content { text-align: center; padding: 20px; font-size: 16px; color: #333; }"
-            	    + ".otp { font-size: 20px; font-weight: bold; color: #ffffff; background-color: #007bff; padding: 10px 20px; margin: 20px auto; display: inline-block; border-radius: 4px; }"
+            	    + ".otp { font-size: 24px; font-weight: bold; color: #ffffff; background-color: #555555; padding: 15px 25px; margin: 20px auto; display: inline-block; border-radius: 4px; }"
             	    + ".footer { text-align: center; font-size: 12px; color: #888; padding: 10px; }"
+            	    + ".note { font-size: 14px; color: #666; margin-top: 10px; }"
             	    + "</style>"
             	    + "<meta http-equiv='Content-Type' content='text/html; charset=UTF-8'>"
             	    + "</head>"
@@ -56,7 +57,7 @@ public class EmailSender {
             	    + "<h2>Hello!</h2>"
             	    + "<p>You have requested an OTP to verify your account. Below is your OTP:</p>"
             	    + "<div class='otp'>" + otp + "</div>"
-            	    + "<p>Note: This OTP will expire in 5 minutes. If you did not make this request, please ignore this email.</p>"
+            	    + "<p class='note'>Note: This OTP will expire in 2 minutes. If you did not make this request, please ignore this email.</p>"
             	    + "</div>"
             	    + "<div class='footer'>© 2024 Your Company. All Rights Reserved.</div>"
             	    + "</div>"

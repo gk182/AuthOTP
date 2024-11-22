@@ -1,11 +1,10 @@
 package model;
 
-import util.DBConnection;
-import util.SHA256WithSalt;
-
 import java.sql.*;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
+import util.DBConnection;
+import util.SHA256WithSalt;
 
 public class UserDAO {
 	public static int login(String username, String password, String device) {
@@ -137,7 +136,7 @@ public class UserDAO {
 
         String sql = "INSERT INTO otp (username, otp_code, timestamp, expiration_time) VALUES (?, ?, ?, ?)";
         LocalDateTime now = LocalDateTime.now();
-        LocalDateTime expirationTime = now.plus(1, ChronoUnit.MINUTES);
+        LocalDateTime expirationTime = now.plus(2, ChronoUnit.MINUTES);
 
         try (Connection conn = DBConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
@@ -208,7 +207,26 @@ public class UserDAO {
             e.printStackTrace();
         }
     }
-
+    
+    public static boolean canResendOTP(String username) {
+		String sql = "SELECT timestamp FROM otp WHERE username = ? ORDER BY timestamp DESC LIMIT 1";
+		try (Connection conn = DBConnection.getConnection();
+			 PreparedStatement stmt = conn.prepareStatement(sql)) {
+			stmt.setString(1, username);
+			try (ResultSet rs = stmt.executeQuery()) {
+				if (rs.next()) {
+					Timestamp lastTimestamp = rs.getTimestamp("timestamp");
+					LocalDateTime lastTime = lastTimestamp.toLocalDateTime();
+					LocalDateTime now = LocalDateTime.now();
+					// Kiểm tra xem đã qua 1 phút chưa
+					return ChronoUnit.MINUTES.between(lastTime, now) >= 1;
+				}
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return true; // Nếu không tìm thấy OTP trước đó, cho phép gửi lại
+	}
 //	public static void main(String[] args) {
 //        String username = "admin";
 //        String password = "2782004";

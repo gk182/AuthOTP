@@ -14,7 +14,7 @@
         </div>
         <div class="content">
             <p>We have sent a One-Time Password (OTP) to your email. Please enter it below to verify your account.</p>
-            <p>The OTP will expire in <span id="timer">60</span> seconds.</p>
+            <p>The OTP can resend in <span id="timer">60</span> seconds.</p>
         </div>
 
         <form id="otpForm" action="verify-otp" method="POST">
@@ -45,89 +45,6 @@
         <% } %>
     </div>
 
-    <script>
-        // Chức năng xử lý input OTP
-        function moveToNext(field, index) {
-            // Chỉ cho phép nhập số
-            field.value = field.value.replace(/[^0-9]/g, '');
-            
-            // Nếu đã nhập và không phải ô cuối
-            if (field.value && index < 6) {
-                document.getElementById('otp-' + (index + 1)).focus();
-            }
-            
-            // Kiểm tra nếu tất cả các ô đã được điền
-            checkComplete();
-        }
-
-        function checkComplete() {
-            let complete = true;
-            for (let i = 1; i <= 6; i++) {
-                const input = document.getElementById('otp-' + i);
-                if (!input || !input.value) {
-                    complete = false;
-                    break;
-                }
-            }
-            
-            // Enable/disable nút submit dựa trên trạng thái điền form
-            document.querySelector('.submit-btn').disabled = !complete;
-        }
-
-        // Xử lý Backspace
-        document.querySelectorAll('.otp-input input').forEach((input, index) => {
-            input.addEventListener('keydown', (e) => {
-                if (e.key === 'Backspace' && !input.value && index > 0) {
-                    // Focus vào ô trước đó khi nhấn Backspace trên ô trống
-                    document.getElementById('otp-' + index).focus();
-                }
-            });
-        });
-
-        // Timer đếm ngược
-        let timeLeft = 60;
-        const timerDisplay = document.getElementById('timer');
-        const resendBtn = document.getElementById('resendBtn');
-        const otpForm = document.getElementById('otpForm');
-        
-        const timer = setInterval(() => {
-            timeLeft--;
-            timerDisplay.textContent = timeLeft;
-            
-            if (timeLeft <= 0) {
-                clearInterval(timer);
-                resendBtn.disabled = false;
-                // Vô hiệu hóa form OTP
-                document.querySelectorAll('.otp-input input').forEach(input => {
-                    input.disabled = true;
-                });
-                document.querySelector('.submit-btn').disabled = true;
-                
-                // Hiển thị thông báo hết hạn
-                timerDisplay.parentElement.innerHTML = '<span style="color: #dc3545;">OTP has expired. Please request a new one.</span>';
-                
-                // Thêm class để làm mờ form
-                otpForm.classList.add('expired');
-            }
-        }, 1000);
-
-        // Reset form khi click resend
-        document.querySelector('form[action="user"]').addEventListener('submit', () => {
-            timeLeft = 60;
-            resendBtn.disabled = true;
-            
-            // Kích hoạt lại form
-            document.querySelectorAll('.otp-input input').forEach(input => {
-                input.disabled = false;
-                input.value = ''; // Xóa giá trị cũ
-            });
-            
-            // Xóa class expired
-            otpForm.classList.remove('expired');
-            
-            // Reset thông báo timer
-            timerDisplay.parentElement.innerHTML = 'The OTP will expire in <span id="timer">60</span> seconds.';
-        });
-    </script>
+    <script src="js/OTP.js"></script>
 </body>
 </html>

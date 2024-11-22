@@ -6,8 +6,17 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import model.UserDAO;
+import util.EmailSender;
+import util.OTPGenerator;
 
 import java.io.IOException;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 
 /**
  * Servlet implementation class VerifyOTPServlet
@@ -44,6 +53,27 @@ public class VerifyOTPServlet extends HttpServlet {
 			otp += request.getParameter("otp-" + i);
 		}
 
+		String action = request.getParameter("action");
+
+		if ("resend-otp".equals(action)) {
+			// Kiểm tra thời gian gửi lại OTP
+			if (UserDAO.canResendOTP(username)) {
+				String email = UserDAO.getEmailByUsername(username);
+				otp = OTPGenerator.generateOTP();
+           		String subject = "Xác thực OTP";
+				 // Send new OTP
+				EmailSender.sendEmail(email, subject, otp);
+			
+				// Save new OTP
+				UserDAO.saveOTP(username, otp);
+				request.setAttribute("message", "A new OTP has been sent to your email.");
+			} else {
+				request.setAttribute("errorMessage", "You can only request a new OTP after 1 minute.");
+			}
+			request.getRequestDispatcher("VerifyOTP.jsp").forward(request, response);
+			return;
+		}
+
 		int verificationResult = UserDAO.verifyOTP(username, otp);
 		
 		if (verificationResult == 1) {
@@ -61,5 +91,10 @@ public class VerifyOTPServlet extends HttpServlet {
 			request.getRequestDispatcher("VerifyOTP.jsp").forward(request, response);
 		}
 	}
+
+	
+
+	// Thêm phương thức gửi OTP mới
+	
 
 }
