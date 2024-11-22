@@ -12,7 +12,7 @@ public class EmailSender {
         // Cấu hình SMTP
         String host = "smtp.gmail.com";
         String port = "587";
-        String senderEmail = "phamgiakhai278@gmail.com"; // Email gửi đi
+        String senderEmail = "example@gmail.com"; // Email gửi đi
         String senderPassword = "ndrx hmgh kdyd fuvt"; // Mật khẩu ứng dụng của Google
 
         // Thiết lập thuộc tính cho SMTP
